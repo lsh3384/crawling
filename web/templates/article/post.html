@@ -1,0 +1,12 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+<p>뉴스를 등록해주세요</p>
+
+<form action="{% url 'post_result' %}" method="post" >
+    {% csrf_token %}
+    <label>제목:</label><input name="title">
+    <label>키워드: </label>
+    <textarea name="content" id="content" rows="30"></textarea>
+    <input type="submit">
+</form>

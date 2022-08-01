@@ -27,24 +27,31 @@ user_pw = "pw"
 
 # Move to URL
 print("browser")
-driver.get("https://nid.naver.com/nidlogin.login?mode=form&url=https%3A%2F%2Fwww.naver.com")
+driver.get("https://www.daum.net")
 driver.maximize_window()
 
-elem_id = driver.find_element(By.ID, 'id')
-elem_id.click()
-pyperclip.copy(user_id)
-elem_id.send_keys(Keys.CONTROL, 'v')
-time.sleep(1)
 
-elem_pw = driver.find_element(By.ID, 'pw')
-elem_pw.click()
-pyperclip.copy(user_pw)
-elem_pw.send_keys(Keys.CONTROL, 'v')
-time.sleep(1)
+elem_id = driver.find_element(By.CLASS_NAME, 'slide_favorsch')
+elem_texts = elem_id.find_elements(By.CSS_SELECTOR, 'li')
+for elem in elem_texts:
+    print(elem.text)
 
-driver.find_element(By.ID, 'log.login').click()
+next_btn = driver.find_element(By.XPATH, '//*[@id="wrapSearch"]/div[4]/button[2]')
+next_btn.click()
 
-driver.get("https://www.naver.com/")
+elem_id = driver.find_element(By.CLASS_NAME, 'slide_favorsch')
+elem_texts = elem_id.find_elements(By.CSS_SELECTOR, 'li')
+for elem in elem_texts:
+    print(elem.text)
+
+
+#
+# elem_id = driver.find_element(By.CLASS_NAME, 'list_favorsch hide')
+# elem_texts = elem_id.find_elements(By.CSS_SELECTOR, 'li')
+# for elem in elem_texts:
+#     print(elem.text)
+
+
 time.sleep(200)
 # driver.back()
 # driver.forward()

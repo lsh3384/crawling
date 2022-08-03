@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.shortcuts import render, redirect
 
 from forms import UploadFileForm
+from ..models import UploadFileModel
 
 def index(request):
     count = Articles.objects.count()
@@ -30,9 +31,7 @@ def upload_image_form(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            with open('static/media/'+str(request.FILES['file']), 'wb+') as destination:
-                for chunk in request.FILES['file'].chunks():
-                    destination.write(chunk)
+            form.save()
 
     form = UploadFileForm()
     context = { 'form': form }

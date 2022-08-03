@@ -10,4 +10,5 @@ class Articles(models.Model):
 
 
 class UploadFileModel(models.Model):
-    upload = models.FileField(null=True, upload_to='media/')
+    title = models.CharField(max_length=200)
+    file = models.FileField(null=True, upload_to='result/')

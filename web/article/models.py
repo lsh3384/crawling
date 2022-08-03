@@ -7,3 +7,7 @@ class Articles(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     date = models.DateTimeField()
+
+
+class UploadFileModel(models.Model):
+    upload = models.FileField(null=True, upload_to='media/')

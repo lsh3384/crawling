@@ -1,5 +1,6 @@
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+{% extends 'base.html' %}
+{% block content %}
 
 <p>뉴스를 등록해주세요</p>
 
@@ -10,3 +11,5 @@
     <textarea name="content" id="content" rows="30"></textarea>
     <input type="submit">
 </form>
+
+{% endblock %}

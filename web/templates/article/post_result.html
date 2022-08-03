@@ -1,6 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+
 <p>Article 현황</p>
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+
 <div class="container my-3">
     <table class="table">
         <thead>
@@ -14,18 +16,20 @@
         <tbody>
         {% if articles %}
         {% for article in articles %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ article.title }}</td>
-            <td>{{ article.content }}</td>
-            <td>{{ article.date }}</td>
-        </tr>
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.content }}</td>
+                <td>{{ article.date }}</td>
+            </tr>
         {% endfor %}
         {% else %}
-        <tr>
-            <td colspan="4">기사가 없습니다.</td>
-        </tr>
+            <tr>
+                <td colspan="4">기사가 없습니다.</td>
+            </tr>
         {% endif %}
         </tbody>
     </table>
 </div>
+
+{% endblock %}

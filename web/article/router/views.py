@@ -6,6 +6,8 @@ from article.models import Articles
 from django.utils import timezone
 from django.shortcuts import render, redirect
 
+from forms import UploadFileForm
+
 def index(request):
     count = Articles.objects.count()
     q = Articles(url='http://testurl.com', title='test_title', content='tests_content', date=timezone.now())
@@ -23,3 +25,15 @@ def post_result(request):
     articles = Articles.objects.all()
     context = {'articles': articles}
     return render(request, 'article/post_result.html', context)
+
+def upload_image_form(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            with open('static/media/'+str(request.FILES['file']), 'wb+') as destination:
+                for chunk in request.FILES['file'].chunks():
+                    destination.write(chunk)
+
+    form = UploadFileForm()
+    context = { 'form': form }
+    return render(request, 'article/form_test.html', context)

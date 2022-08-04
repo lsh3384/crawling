@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load my_filter %}
 {% block content %}
 
 <p>Article 현황</p>
@@ -17,8 +18,10 @@
         {% if articles %}
         {% for article in articles %}
             <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ article.title }}</td>
+                <td>{{ articles.paginator.count|sub:articles.start_index|sub:forloop.counter0|add:1 }}</td>
+                <td>
+                    <a href="{% url 'post_detail' %}?post_id={{ article.id }}">{{ article.title }}</a>
+                 </td>
                 <td>{{ article.content }}</td>
                 <td>{{ article.date }}</td>
             </tr>
@@ -30,6 +33,46 @@
         {% endif %}
         </tbody>
     </table>
+
+
+        <!-- 페이징처리 시작 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if articles.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'post_result' %}?page={{ articles.previous_page_number }}">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in articles.paginator.page_range %}
+        {% if page_number >= articles.number|add:-5 and page_number <= articles.number|add:5 %}
+        {% if page_number == articles.number %}
+        <li class="page-item active" aria-current="page">
+            <a class="page-link" href="{% url 'post_result' %}?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'post_result' %}?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if articles.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'post_result' %}?page={{ articles.next_page_number }}">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
 </div>
 
 {% endblock %}

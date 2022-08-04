@@ -9,6 +9,8 @@ from django.shortcuts import render, redirect
 from forms import UploadFileForm
 from ..models import UploadFileModel
 
+from django.core.paginator import Paginator
+
 def index(request):
     count = Articles.objects.count()
     q = Articles(url='http://testurl.com', title='test_title', content='tests_content', date=timezone.now())
@@ -16,16 +18,36 @@ def index(request):
     return HttpResponse("테스트 중입니다." + str(count))
 
 def post(request):
-    return render(request, 'article/post.html')
+    if request.method == 'POST':
+        if request.POST.get('title') != None and request.POST.get('content') != None:
+            q = Articles(url='http://testurl.com', title=request.POST.get('title'), content=request.POST.get('content'),
+                         date=timezone.now())
+            q.save()
+            page = request.GET.get('page', '1')  # 페이지
+            articles = Articles.objects.order_by('-date')
+            paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
+            page_obj = paginator.get_page(page)
+            context = {'articles': page_obj}
+            return render(request, 'article/post_result.html', context)
+
+    else:
+        return render(request, 'article/post.html')
+
 
 def post_result(request):
-    if request.POST.get('title') != None and request.POST.get('content') != None:
-        q = Articles(url='http://testurl.com', title=request.POST.get('title'), content=request.POST.get('content'), date=timezone.now())
-        q.save()
-
-    articles = Articles.objects.all()
-    context = {'articles': articles}
+    page = request.GET.get('page')  # 페이지
+    articles = Articles.objects.order_by('-date')
+    paginator = Paginator(articles, 10)  # 페이지당 10개씩 보여주기
+    page_obj = paginator.get_page(page)
+    context = {'articles': page_obj}
     return render(request, 'article/post_result.html', context)
+
+def post_detail(request):
+    post = request.GET.get('post_id')  # 페이지
+    article = Articles.objects.get(id=post)
+    context = {'article': article}
+    return render(request, 'article/post_detail.html', context)
+
 
 def upload_image_form(request):
     if request.method == 'POST':

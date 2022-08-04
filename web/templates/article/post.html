@@ -4,7 +4,7 @@
 
 <p>뉴스를 등록해주세요</p>
 
-<form action="{% url 'post_result' %}" method="post" >
+<form action="{% url 'post' %}" method="post" >
     {% csrf_token %}
     <label>제목:</label><input name="title">
     <label>키워드: </label>
